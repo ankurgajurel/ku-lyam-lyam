@@ -33,16 +33,23 @@ const mapStepForm: { [key: number]: () => React.JSX.Element } = {
 
 function PeronalDetails() {
   return (
-    <div className="flex flex-col w-fit">
-      <label htmlFor="full-name" className="">
-        Full Name
-      </label>
-      <input
-        name="full-name"
-        type="text"
-        className="py-3 px-4 block border-gray-200 border-[1px] rounded-md text-sm"
-        placeholder="Full Name"
-      />
+    <div className=" gap-3 flex justify-start">
+      <div className="flex flex-col w-full justify-start">
+        <input
+          name="full-name"
+          type="text"
+          className="py-3 px-4 block max-w-md border-gray-200 border-[1px] rounded-md text-sm"
+          placeholder="Full Name"
+        />
+      </div>
+      <div className="flex flex-col w-full justify-start">
+        <input
+          name="dob"
+          type="text"
+          className="py-3 px-4 block max-w-md border-gray-200 border-[1px] rounded-md text-sm"
+          placeholder="Date of Birth (AD)"
+        />
+      </div>
     </div>
   );
 }
