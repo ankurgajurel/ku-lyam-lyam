@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Steps, Button, Divider } from "@arco-design/web-react";
 import { IconLeft, IconRight } from "@arco-design/web-react/icon";
 const Step = Steps.Step;
@@ -8,28 +8,56 @@ const Step = Steps.Step;
 const stepsData = [
   {
     name: "Personal Details",
-    description: "description step 1",
+    description: "Your Personal Information",
   },
   {
-    name: "step 2 ",
-    description: "description step 2",
+    name: "Family & Nominee Info ",
+    description: "Family Details",
   },
   {
-    name: "step 3",
-    description: "description step 3",
+    name: "Address Info",
+    description: "Address and Location Information",
   },
   {
-    name: "step 4",
-    description: "description step 4",
+    name: "Occupation Info",
+    description: "Professional Information",
   },
 ];
 
-const mapStepForm: { [key: number]: number } = {
-  1: stepForm(0),
-  2: stepForm(1),
-  3: stepForm(2),
-  4: stepForm(3),
+const mapStepForm: { [key: number]: () => React.JSX.Element } = {
+  1: PeronalDetails,
+  2: FamilyNominee,
+  3: AddressInfo,
+  4: OccupationInfo,
 };
+
+function PeronalDetails() {
+  return (
+    <div className="flex flex-col w-fit">
+      <label htmlFor="full-name" className="">
+        Full Name
+      </label>
+      <input
+        name="full-name"
+        type="text"
+        className="py-3 px-4 block border-gray-200 border-[1px] rounded-md text-sm"
+        placeholder="Full Name"
+      />
+    </div>
+  );
+}
+
+function FamilyNominee(): JSX.Element {
+  return <div>Family Nominee</div>;
+}
+
+function AddressInfo() {
+  return <div>Family Nominee</div>;
+}
+
+function OccupationInfo() {
+  return <div>Family Nominee</div>;
+}
 
 function stepForm(num: number) {
   return num;
@@ -49,9 +77,8 @@ function App() {
       >
         <div className="">Step{step} Content</div>
 
-        <div className="">
+        <div className="flex gap-2 justify-center">
           <Button
-            type="secondary"
             className="pl-[8px]"
             disabled={current <= 1}
             onClick={() => setCurrent(current - 1)}
@@ -60,10 +87,10 @@ function App() {
             Back
           </Button>
           <Button
+            className={`bg-blue-300`}
             disabled={current >= stepsData.length}
             onClick={() => setCurrent(current + 1)}
-            style={{ marginLeft: 20, paddingRight: 8 }}
-            type="primary"
+            type="default"
           >
             Next
             <IconRight />
@@ -87,8 +114,7 @@ function App() {
             ))}
           </Steps>
         </div>
-        <Divider type="vertical" className="block h-auto" />
-        {renderContent(mapStepForm[current])}
+        {renderContent(mapStepForm[current]())}
       </div>
     </div>
   );
