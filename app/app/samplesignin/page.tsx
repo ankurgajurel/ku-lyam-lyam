@@ -4,7 +4,7 @@ import Image from "next/image";
 import DhirajAvatar from "@/public/avatar/dhiraj.jpeg";
 import MerchantAvatar from "@/public/avatar/khalti.png";
 
-export default function App() {
+export default function SampleSignin() {
   return (
     <section className="container mx-auto flex items-center justify-center py-20 px-10">
       <div className="card border-[1px] w-fit shadow-2xl shadow-[#BA4B32]/10 rounded-lg">
