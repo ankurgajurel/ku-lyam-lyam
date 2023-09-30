@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String  @id @default(cuid())
+  phoneNumber   String  @unique
+  password      String
+  verified      Boolean @default(false)
+  encryptedData String?
+  decryptionKey String?
+  iv            String?
+
+  claims Claim[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClaimType {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String
+  claims      Claim[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Claim {
+  id    String  @id @default(cuid())
+  value Boolean
+
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  claimTypeId String
+  claimType   ClaimType @relation(fields: [claimTypeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, claimTypeId])
+}
