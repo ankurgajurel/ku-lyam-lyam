@@ -57,10 +57,10 @@ export default function App() {
             <span>Confidential Documents (Citizenship, License)</span>
           </div>
           <div className="buttons w-full flex gap-3 py-7">
-            <button className="w-1/2 py-3 text-base border-[1px] border-[#BA4B32] hover:bg-[#BA4B32] hover:text-white transition-all duration-300 text-[#BA4B32] rounded-md">
+            <button className="w-1/2 py-3 text-base border-[1px] border-[#BA4B32] hover:bg-[#BA4B32] hover:text-white transition-all duration-300 text-[#BA4B32] rounded-[0.40rem]">
               Cancel
             </button>
-            <button className="w-1/2 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-md text-white">
+            <button className="w-1/2 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white">
               Agree And Verify
             </button>
           </div>

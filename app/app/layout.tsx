@@ -5,9 +5,6 @@ import { DM_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 
-import Image from "next/image";
-import BgImage from "../public/Logo/bg.png";
-
 const dm_sans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

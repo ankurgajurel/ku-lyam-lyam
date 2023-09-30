@@ -80,7 +80,7 @@ export default function Navbar() {
                 Log in
               </a>
               <a href="/auth/signup">
-                <span className="px-5 py-3 border-[1px] text-gray-500 font-medium hover:bg-[#BA4B32] hover:text-white transition duration-300 rounded-md">
+                <span className="px-5 py-3 border-[1px] text-gray-500 font-medium hover:bg-[#BA4B32] hover:text-white transition duration-300 rounded-[0.40rem]">
                   Get Started
                 </span>
               </a>

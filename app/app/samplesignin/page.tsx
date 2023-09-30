@@ -22,7 +22,7 @@ export default function App() {
             <hr className="w-full mt-3" />
           </div>
           <div className="flex flex-col gap-2">
-            <div className="user-card bg-[#BA4B32]/[14%] py-3 px-5 rounded-xl flex gap-5 items-center">
+            <div className="user-card bg-[#BA4B32]/[14%] py-3 px-5 rounded-[0.40rem] flex gap-5 items-center">
               <div className="avatar rounded-full">
                 <Image
                   src={DhirajAvatar}
@@ -66,14 +66,14 @@ export default function App() {
               minLength={10}
               maxLength={15}
               name="password"
-              className="py-3 mt-5 px-4 block w-full h-[55px] border-gray-200 border-[1px] rounded-md text-sm placeholder:text-base"
+              className="py-3 mt-5 px-4 block w-full h-[55px] border-gray-200 border-[1px] rounded-[0.40rem] text-sm placeholder:text-base"
               required
               placeholder="Password"
               aria-describedby="password-error"
             />
           </div>
           <div className="buttons py-7">
-            <button className="px-5 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-md text-white">
+            <button className="px-5 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white">
               Login Now
             </button>
           </div>

@@ -10,10 +10,15 @@
   },
   "dependencies": {
     "@arco-design/web-react": "^2.53.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "lucide-react": "^0.279.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-multistep": "^5.5.9"
+    "react-multistep": "^5.5.9",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "latest",
