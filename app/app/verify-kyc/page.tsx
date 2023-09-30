@@ -60,6 +60,10 @@ function App() {
     annualIncome: "",
   });
 
+  function handleSubmit() {
+    console.log(formData);
+  }
+
   function renderContent(step: any) {
     return (
       <div
@@ -88,6 +92,7 @@ function App() {
             Next
             <IconRight />
           </Button>
+          {current === 4 ? <button onClick={handleSubmit}>Submit</button> : <></>}
         </div>
       </div>
     );
@@ -234,28 +239,46 @@ function PersonalDetails({ formData, setFormData }: any) {
 
 // Define FamilyNominee, AddressInfo, and OccupationInfo components similarly.
 
-function FamilyNominee(clientData: any) {
+function FamilyNominee({ formData, setFormData }: any) {
+  const {
+    fatherName,
+    motherName,
+    grandfatherName,
+    nomineeRelationship,
+    nomineeName,
+  } = formData;
 
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   return (
-    <div className="grid md:grid-cols-2 gap-5">
+    <div className="grid md:grid-cols-2 gap-5 text-black">
       <div className="flex flex-col ">
         <span className="text-xs mb-1">Father&apos;s Name</span>
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="father-name"
-          id="father-name"
-          placeholder="Father&apos;s Name"
+          name="fatherName"
+          id="fatherName"
+          onChange={handleChange}
+          value={fatherName}
+          placeholder="Father's Name"
         />
       </div>
-      <div className="flex flex-col ">
+      <div className="flex flex-col">
         <span className="text-xs mb-1">Mother&apos;s Name</span>
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="mother-name"
-          id="mother-name"
-          placeholder="Mother&apos;s Name"
+          name="motherName"
+          id="motherName"
+          placeholder="Mother's Name"
+          value={motherName}
+          onChange={handleChange}
         />
       </div>
       <div className="flex flex-col ">
@@ -263,9 +286,11 @@ function FamilyNominee(clientData: any) {
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="grandfather-name"
-          id="grandfather-name"
-          placeholder="Grandfather&apos;s Name"
+          name="grandfatherName"
+          id="grandfatherName"
+          placeholder="Grandfather's Name"
+          value={grandfatherName}
+          onChange={handleChange}
         />
       </div>
       <div className="flex flex-col ">
@@ -273,9 +298,11 @@ function FamilyNominee(clientData: any) {
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="nominee-name"
-          id="nominee-name"
-          placeholder="Nominee&apos;s Name"
+          name="nomineeName"
+          id="nomineeName"
+          placeholder="Nominee's Name"
+          value={nomineeName}
+          onChange={handleChange}
         />
       </div>
       <div className="flex flex-col ">
@@ -283,9 +310,11 @@ function FamilyNominee(clientData: any) {
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="nominee-relation"
-          id="nominee-relation"
+          name="nomineeRelationship"
+          id="nomineeRelation"
           placeholder="Relation with Nominees"
+          value={nomineeRelationship}
+          onChange={handleChange}
         />
       </div>
       <div className="flex flex-col col-span-2">
@@ -294,9 +323,9 @@ function FamilyNominee(clientData: any) {
         </span>
         <input
           type="file"
-          name="file-input"
+          name="fileInput"
           accept=".jpg, .jpeg, .png, .gif"
-          id="file-input"
+          id="fileInput"
           className="block w-full border border-gray-200 shadow-sm rounded-[0.40rem] text-sm file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4"
         />
         <span className="text-xs italic mt-1">
@@ -307,14 +336,25 @@ function FamilyNominee(clientData: any) {
   );
 }
 
-function AddressInfo(clientData: any) {
+function AddressInfo({ formData, setFormData }: any) {
+  const { province, district, municipality, wardNo, toleName } = formData;
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   return (
     <div className="grid md:grid-cols-2 gap-5 text-black">
       <div className="flex flex-col">
         <span className="text-xs mb-1">Province</span>
         <select
-          id="gender"
-          name="gender"
+          id="province"
+          name="province"
+          value={province}
+          onChange={handleChange}
           className="border-[1px] h-full rounded-[0.40rem] px-2 py-2"
         >
           {[
@@ -339,6 +379,8 @@ function AddressInfo(clientData: any) {
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
           name="district"
           id="district"
+          value={district}
+          onChange={handleChange}
           placeholder="Arghakhanchi"
         />
       </div>
@@ -349,6 +391,8 @@ function AddressInfo(clientData: any) {
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
           name="municipality"
           id="municipality"
+          value={municipality}
+          onChange={handleChange}
           placeholder="Kathmandu Metropolitan City"
         />
       </div>
@@ -357,8 +401,10 @@ function AddressInfo(clientData: any) {
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="ward"
-          id="ward"
+          name="wardNo"
+          id="wardNo"
+          value={wardNo}
+          onChange={handleChange}
           placeholder="Ward no."
         />
       </div>
@@ -367,8 +413,10 @@ function AddressInfo(clientData: any) {
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="tole"
-          id="tole"
+          name="toleName"
+          id="toleName"
+          value={toleName}
+          onChange={handleChange}
           placeholder="Subas Nagar"
         />
       </div>
@@ -376,7 +424,16 @@ function AddressInfo(clientData: any) {
   );
 }
 
-function OccupationInfo(clientData: any) {
+function OccupationInfo({ formData, setFormData }: any) {
+  const { occupationInfo, annualIncome } = formData;
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   return (
     <div className="grid md:grid-cols-2 gap-5 text-black">
       <div className="flex flex-col">
@@ -392,13 +449,15 @@ function OccupationInfo(clientData: any) {
         </select>
       </div>
       <div className="flex flex-col ">
-        <span className="text-xs mb-1">Full Name</span>
+        <span className="text-xs mb-1">Annual Income</span>
         <input
-          type="text"
+          type="number"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
-          name="full-name"
-          id="full-name"
-          placeholder="Full Name"
+          name="annualIncome"
+          id="annualIncome"
+          value={annualIncome}
+          onChange={handleChange}
+          placeholder="4500000"
         />
       </div>
     </div>

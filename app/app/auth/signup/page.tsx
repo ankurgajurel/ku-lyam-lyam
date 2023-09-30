@@ -1,9 +1,8 @@
-import Signup from "@/components/Auth/Login";
-
+import Signup from "@/components/Auth/Signup";
 export default function SignupPage() {
   return (
-    <div className="flex items-center">
+    <>
       <Signup />
-    </div>
+    </>
   );
 }

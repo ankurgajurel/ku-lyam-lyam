@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { LogoEkOnly } from "../assetComponents/Logos";
+import { LogoEkOnly } from "@/components/assetComponents/Logos";
+
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
+
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,21 +20,19 @@ export default function Login() {
     };
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_BACKEND_URL}/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-        }
-      );
+      const response = await fetch("https://server-p7.samrid.me/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      });
 
       if (response.ok) {
         console.log("Login successful");
         const { token } = await response.json();
         localStorage.setItem("token", token);
+        router.push("/");
       } else {
         console.error("Login failed");
       }
@@ -60,7 +62,7 @@ export default function Login() {
               <div className="grid gap-y-4">
                 <div>
                   <label htmlFor="email" className="block text-sm mb-2">
-                    Phone Number
+                    Email address
                   </label>
                   <div className="relative">
                     <input

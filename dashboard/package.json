@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,17 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@arco-design/web-react": "^2.53.2",
-    "axios": "^1.5.1",
+    "@radix-ui/react-checkbox": "^1.0.4",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@tanstack/react-table": "^8.10.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "jwt-decode": "^3.1.2",
     "lucide-react": "^0.279.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-multistep": "^5.5.9",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
   },

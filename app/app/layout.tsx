@@ -5,6 +5,8 @@ import { DM_Sans } from "next/font/google";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 
+import "@arco-design/web-react/dist/css/arco.css";
+
 const dm_sans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,7 +24,7 @@ export default function RootLayout({
       <head>
         <link
           rel="stylesheet"
-          href="https://unpkg.com/@arco-design/web-react/dist/css/arco.css"
+          // href="https://unpkg.com/@arco-design/web-react/dist/css/arco.css"
         />
       </head>
       <body className={dm_sans.className}>
