@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { flowController } from "./flow";
 import { claimsRouter } from "./claims";
 import { onboardController } from "./onboard";
@@ -8,6 +9,7 @@ const app = express();
 const port = parseInt(process.env.PORT || "8080");
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/flow", flowController);
 app.use("/claims", claimsRouter);
