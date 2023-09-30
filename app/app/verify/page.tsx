@@ -1,10 +1,60 @@
+"use client";
 import { LogoEkOnly } from "@/components/assetComponents/Logos";
 import Image from "next/image";
 
 import DhirajAvatar from "@/public/avatar/dhiraj.jpeg";
 import MerchantAvatar from "@/public/avatar/khalti.png";
 
+import { useSearchParams } from "next/navigation";
+
+import jwt_decode from "jwt-decode";
+
 export default function App() {
+  const searchParams = useSearchParams();
+
+  const token = searchParams.get("token");
+  if (!token) {
+    return <>Invalid shit smd</>;
+  }
+  var decoded = jwt_decode(token);
+  console.log(decoded);
+
+  function AgreeAndVerify() {
+    const getDataURL =
+      "https://server-p7.samrid.me/flow/data?dataToken=" + token;
+    console.log(getDataURL);
+  }
+
+  const axios = require("axios");
+
+  function fetchDataWithToken(apiUrl: string, bearerToken: string) {
+    return axios
+      .get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+      })
+      .then((response: any) => {
+        return response.data;
+      })
+      .catch((error: Error) => {
+        throw error;
+      });
+  }
+
+  const bearerToken = localStorage.getItem("token");
+  const apiUrl =
+    `https://server-p7.samrid.me/flow/data?dataToken=` + bearerToken;
+  bearerToken
+    ? fetchDataWithToken(apiUrl, bearerToken)
+        .then((data: Object) => {
+          console.log(data);
+        })
+        .catch((error: Error) => {
+          console.error("data fetching error -- :", error);
+        })
+    : console.log("the token is buggy -- ");
+
   return (
     <section className="container mx-auto flex items-center justify-center py-20 px-10">
       <div className="card border-[1px] w-fit shadow-2xl shadow-[#BA4B32]/10 rounded-lg">
@@ -34,8 +84,8 @@ export default function App() {
                 x2="19"
                 y2="0.500002"
                 stroke="#BA4B32"
-                stroke-opacity="0.5"
-                stroke-dasharray="2 2"
+                strokeOpacity="0.5"
+                strokeDasharray="2 2"
               />
             </svg>
             <div className="merchant-dp">
@@ -60,7 +110,12 @@ export default function App() {
             <button className="w-1/2 py-3 text-base border-[1px] border-[#BA4B32] hover:bg-[#BA4B32] hover:text-white transition-all duration-300 text-[#BA4B32] rounded-[0.40rem]">
               Cancel
             </button>
-            <button className="w-1/2 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white">
+            <button
+              onClick={() => {
+                AgreeAndVerify();
+              }}
+              className="w-1/2 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white"
+            >
               Agree And Verify
             </button>
           </div>

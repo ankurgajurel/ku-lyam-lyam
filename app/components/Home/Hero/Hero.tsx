@@ -9,11 +9,11 @@ export default function HomeHero() {
           >
             Export as Merchant
             <span className="flex items-center gap-x-1">
-              <span className="border-l border-gray-200 text-blue-600 pl-2">
+              <span className="border-l border-gray-200 text-[#BA4B32] pl-2">
                 Merchant Portal
               </span>
               <svg
-                className="w-2.5 h-2.5 text-blue-600"
+                className="w-2.5 h-2.5 text-[#BA4B32]"
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
@@ -22,8 +22,8 @@ export default function HomeHero() {
                 <path
                   d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                 />
               </svg>
             </span>
@@ -32,14 +32,14 @@ export default function HomeHero() {
 
         <div className="mt-5 max-w-3xl text-center mx-auto">
           <h1 className="block font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl">
-            The Ultimate KYC for Nepal
+            Ek Pahichan, Nepal&apos;s secure and centralized KYC.
           </h1>
         </div>
 
         <div className="mt-5 max-w-3xl text-center mx-auto">
           <p className="text-lg text-gray-600">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores,
-            libero!
+            Unlocking Nepal&apos;s potential with a Unified KYC System | Seamlessly
+            verify identities, empower growth.
           </p>
         </div>
 
