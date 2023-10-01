@@ -5,55 +5,82 @@ import Image from "next/image";
 import DhirajAvatar from "@/public/avatar/dhiraj.jpeg";
 import MerchantAvatar from "@/public/avatar/khalti.png";
 
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 
-import jwt_decode from "jwt-decode";
+import { useEffect, useState } from "react";
+import jwt from "jsonwebtoken";
+import axios from "axios";
+
+interface JwtTokenDecoded {
+  claims: string[];
+  callbackUrl: string;
+}
+
+interface ClaimType {
+  id: string;
+  name: string;
+  description: string;
+}
+
+const SERVER_URL = "https://server-p7.samrid.me";
 
 export default function App() {
   const searchParams = useSearchParams();
-
   const token = searchParams.get("token");
-  if (!token) {
-    return <>Invalid shit smd</>;
-  }
-  var decoded = jwt_decode(token);
-  console.log(decoded);
 
-  function AgreeAndVerify() {
-    const getDataURL =
-      "https://server-p7.samrid.me/flow/data?dataToken=" + token;
-    console.log(getDataURL);
-  }
+  const [decodedToken, setDecodedToken] = useState<JwtTokenDecoded>();
+  const [claimTypes, setClaimTypes] = useState<ClaimType[]>();
+  const [userToken, setUserToken] = useState<string>();
 
-  const axios = require("axios");
-
-  function fetchDataWithToken(apiUrl: string, bearerToken: string) {
-    return axios
-      .get(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-        },
-      })
-      .then((response: any) => {
-        return response.data;
-      })
-      .catch((error: Error) => {
-        throw error;
+  useEffect(() => {
+    fetch("https://server-p7.samrid.me/claims/types")
+      .then((response) => response.json())
+      .then((data) => {
+        setClaimTypes(data.claimTypes);
       });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return redirect("/auth/login");
+    }
+    setUserToken(token);
+  }, []);
+
+  useEffect(() => {
+    if (!token) {
+      throw new Error("Token not found");
+    }
+    const decoded = jwt.decode(token) as JwtTokenDecoded;
+    setDecodedToken(decoded);
+  }, [token]);
+
+  function encodeB64Claims(claims: string[]) {
+    return btoa(JSON.stringify(claims));
   }
 
-  const bearerToken = localStorage.getItem("token");
-  const apiUrl =
-    `https://server-p7.samrid.me/flow/data?dataToken=` + bearerToken;
-  bearerToken
-    ? fetchDataWithToken(apiUrl, bearerToken)
-        .then((data: Object) => {
-          console.log(data);
-        })
-        .catch((error: Error) => {
-          console.error("data fetching error -- :", error);
-        })
-    : console.log("the token is buggy -- ");
+  async function submitDataToExternalService() {
+    try {
+      const resp = await axios.get(`${SERVER_URL}/flow/data`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+        params: {
+          dataToken: token,
+        },
+      });
+      const { callbackUrl, claims } = resp.data;
+
+      const encodedClaims = encodeB64Claims(claims);
+      const redirectUrl = `${callbackUrl}?claims=${encodedClaims}`;
+
+      window.location.assign(redirectUrl);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 
   return (
     <section className="container mx-auto flex items-center justify-center py-20 px-10">
@@ -98,22 +125,32 @@ export default function App() {
             </span>
             <span>
               wants to{" "}
-              <span className="text-[#BA4B32] font-extrabold">verify</span> your
+              <span className="text-[#BA4B32] font-extrabold">verify</span> that
+              you're
             </span>
             <hr className="w-full mt-3" />
           </div>
-          <div className="access-data flex flex-col text-base font-light">
-            <span>Personal Details (Name, Email, Phone Number)</span>
-            <span>Confidential Documents (Citizenship, License)</span>
+          <div className="access-data flex flex-col text-base font-light items-center">
+            <span>
+              {decodedToken?.claims.map((claim, index) => (
+                <div key={index}>
+                  <span className="text-[#000000] text-base text-center">
+                    {claimTypes
+                      ? claimTypes.find((c) => c.id == claim)?.name
+                      : ""}
+                  </span>
+                  <br />
+                </div>
+              ))}
+            </span>
+            {/* <span>Confidential Documents (Citizenship, License)</span> */}
           </div>
           <div className="buttons w-full flex gap-3 py-7">
             <button className="w-1/2 py-3 text-base border-[1px] border-[#BA4B32] hover:bg-[#BA4B32] hover:text-white transition-all duration-300 text-[#BA4B32] rounded-[0.40rem]">
               Cancel
             </button>
             <button
-              onClick={() => {
-                AgreeAndVerify();
-              }}
+              onClick={submitDataToExternalService}
               className="w-1/2 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white"
             >
               Agree And Verify
