@@ -49,7 +49,7 @@ export default function Login() {
         <div className="px-10 py-10">
           <div className="">
             <div className="text-xl font-extrabold mb-7">
-              Log Into Ek Parichaya
+              Log Into Ek Pahichan
             </div>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-y-4">
