@@ -17,13 +17,6 @@ interface Claim {
 }
 
 export default function MerchantDataView() {
-  const searchParams = useSearchParams();
-  const claims = searchParams.get("claims");
-  if (!claims) {
-    return <>No claims found</>;
-  }
-
-  const decodedClaims: Claim[] = JSON.parse(atob(claims));
   const [claimTypes, setClaimTypes] = useState<ClaimType[]>();
 
   useEffect(() => {
@@ -33,6 +26,13 @@ export default function MerchantDataView() {
         setClaimTypes(data.claimTypes);
       });
   }, []);
+
+  const searchParams = useSearchParams();
+  const claims = searchParams.get("claims");
+  if (!claims) {
+    return <>No claims found</>;
+  }
+  const decodedClaims: Claim[] = JSON.parse(atob(claims));
 
   return (
     <>
