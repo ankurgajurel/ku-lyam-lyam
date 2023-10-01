@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+
+import crypto from "crypto";
+
 import { Steps, Button } from "@arco-design/web-react";
 import { IconLeft, IconRight } from "@arco-design/web-react/icon";
 import axios from "axios";
@@ -123,15 +126,22 @@ function App() {
 
 export default App;
 
-function PersonalDetails({
-  formData,
-  setFormData,
-}: {
-  formData: any;
-  setFormData: any;
-}) {
-  const { fullName, gender, dob, nationality, education, phone } = formData;
+function PersonalDetails() {
+  // Define initial form data
+  const initialFormData = {
+    fullName: "",
+    gender: "",
+    dob: "",
+    nationality: "",
+    education: "",
+    phone: "",
+    govIDFile: null, // Initialize govIDFile as null
+  };
 
+  // Create state variables for formData and govIDFile
+  const [formData, setFormData] = useState(initialFormData);
+
+  // Handle input field changes
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
@@ -140,6 +150,7 @@ function PersonalDetails({
     });
   };
 
+  // Handle govIDFile selection
   const handleGovIDFileChange = (e: any) => {
     // Store the selected file
     setFormData({
@@ -147,29 +158,37 @@ function PersonalDetails({
       govIDFile: e.target.files[0], // Update the form data with the selected file
     });
   };
-
-  async function handleSubmit(e: any) {
+  // console.log(publicKey, privateKey);
+  // Handle form submission
+  const handleSubmit = async (e: any) => {
     e.preventDefault(); // Prevent the form from submitting via browser default behavior
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("fullName", fullName);
-      formDataToSend.append("gender", gender);
-      formDataToSend.append("dob", dob);
-      formDataToSend.append("nationality", nationality);
-      formDataToSend.append("education", education);
-      formDataToSend.append("phone", phone);
-      formDataToSend.append("govIDFile", formData.govIDFile); // Append the selected file
+      const formDataToSend = {
+        decryptionKey: "hello1234",
+        publicKey: "hello1234",
+        userId: localStorage.getItem('userId'),
+        citizenship: formData.govIDFile,
+        iv: "abcd",
+      };
+      // formDataToSend.appe  nd("fullName", formData.fullName);
+      // formDataToSend.append("gender", formData.gender);
+      // formDataToSend.append("dob", formData.dob);
+      // formDataToSend.append("nationality", formData.nationality);
+      // formDataToSend.append("education", formData.education);
+      // formDataToSend.append("phone", formData.phone);
+      //@ts-ignore
+      // formDataToSend.append("govIDFile", formData.govIDFile); // Append the selected file
+      // formDataToSend.append("publicKey", publicKey);
 
-      const apiUrl = "http://192.168.100.124:6970/ocr";
+      const apiUrl = process.env.NEXT_PUBLIC_OCR_URL;
 
       if (!apiUrl) {
         console.log("api url problems");
         return;
       }
 
-      const response = await axios.post(apiUrl + "/ocr", formDataToSend, {
-        
+      const response = await axios.post(apiUrl, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -180,19 +199,18 @@ function PersonalDetails({
     } catch (error) {
       console.error("Error uploading file:", error);
     }
-  }
+  };
 
   return (
     <div className="grid md:grid-cols-2 gap-5 text-black text-base py-10">
-      <div className="flex flex-col ">
+      <div className="flex flex-col">
         <span className="text-xs mb-1">Full Name</span>
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
           name="fullName"
-          id="full-name"
           placeholder="Full Name"
-          value={fullName}
+          value={formData.fullName}
           onChange={handleChange}
         />
       </div>
@@ -204,7 +222,6 @@ function PersonalDetails({
           type="file"
           name="govIDFile"
           accept=".jpg, .jpeg, .png, .gif"
-          id="file-input"
           className="block w-full border border-gray-200 shadow-sm rounded-[0.40rem] text-sm file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4"
           onChange={handleGovIDFileChange}
         />
