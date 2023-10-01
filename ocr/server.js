@@ -5,6 +5,7 @@ import { OCR } from './ocr.js';
 import { encryptWithPublicKey } from './encrypt.js'
 import axios from 'axios';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const port = 6970
 
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
+
+app.use(cors())
 
 app.post('/ocr', upload.single('citizenship'), async(req, res) => {
 
