@@ -126,7 +126,7 @@ export default function App() {
             <span>
               wants to{" "}
               <span className="text-[#BA4B32] font-extrabold">verify</span> that
-              you're
+              you&apos;re
             </span>
             <hr className="w-full mt-3" />
           </div>
