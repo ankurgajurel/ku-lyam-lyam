@@ -161,7 +161,7 @@ function PersonalDetails({
       formDataToSend.append("phone", phone);
       formDataToSend.append("govIDFile", formData.govIDFile); // Append the selected file
 
-      const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const apiUrl = "http://192.168.100.124:6970/ocr";
 
       if (!apiUrl) {
         console.log("api url problems");
@@ -169,6 +169,7 @@ function PersonalDetails({
       }
 
       const response = await axios.post(apiUrl + "/ocr", formDataToSend, {
+        
         headers: {
           "Content-Type": "multipart/form-data",
         },
