@@ -55,7 +55,7 @@ export default function Navbar() {
           <div className="flex flex-col gap-y-4 gap-x-0 mt-5 md:flex-row md:items-center md:justify-end md:gap-y-0 md:gap-x-7 md:mt-0 md:pl-7">
             {NavItems.map((item, index) => (
               <a
-                className="font-medium text-gray-500 hover:text-[#BA4B32] md:py-6"
+                className="font-medium text-gray-500 hover:text-[#BA4B32] hover:scale-[105%] transition-all duration-200 hover:font-bold md:py-6"
                 href={item.href}
                 key={index}
               >
@@ -64,7 +64,7 @@ export default function Navbar() {
             ))}
             <div className="border-l pl-5 flex gap-5">
               <a
-                className="flex gap-2 items-center text-gray-500 hover:text-[#BA4B32] font-medium"
+                className="flex gap-2 hover:scale-[110%] hover:font-bold transition-all duration-200 items-center text-gray-500 hover:text-[#BA4B32] font-medium"
                 href="/auth/login"
               >
                 <svg
@@ -80,7 +80,7 @@ export default function Navbar() {
                 Log in
               </a>
               <a href="/auth/signup">
-                <span className="px-5 py-3 border-[1px] text-gray-500 font-medium hover:bg-[#BA4B32] hover:text-white transition duration-300 rounded-[0.40rem]">
+                <span className="px-5 py-3 border-[1px] text-gray-500 font-medium hover:bg-[#BA4B32] hover:text-white transition duration-500 rounded-[0.40rem]">
                   Get Started
                 </span>
               </a>

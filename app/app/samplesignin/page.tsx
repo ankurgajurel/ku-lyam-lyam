@@ -1,10 +1,19 @@
+"use client";
+
 import { LogoEkOnly } from "@/components/assetComponents/Logos";
 import Image from "next/image";
 
 import DhirajAvatar from "@/public/avatar/dhiraj.jpeg";
 import MerchantAvatar from "@/public/avatar/khalti.png";
+import { useEffect, useState } from "react";
+import { setUncaughtExceptionCaptureCallback } from "process";
 
-export default function SampleSignin() {
+export default function VerifyPassword() {
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    token ? setToken(token) : <></>;
+  }, []);
   return (
     <section className="container mx-auto flex items-center justify-center py-20 px-10">
       <div className="card border-[1px] w-fit shadow-2xl shadow-[#BA4B32]/10 rounded-lg">
@@ -33,7 +42,7 @@ export default function SampleSignin() {
                 />
               </div>
               <div className="info text-lg">
-                <div className="name font-bold">Ankur Gajurel</div>
+                <div className="name font-bold">Dhiraj Chapagain</div>
                 <div className="phone">
                   <span className="number">9843953546</span> (
                   <span className="status">Primary Number</span>)
@@ -73,9 +82,11 @@ export default function SampleSignin() {
             />
           </div>
           <div className="buttons py-7">
-            <button className="px-5 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white">
-              Login Now
-            </button>
+            <a href={`/verify?token=${token}`}>
+              <button className="px-5 py-3 text-base border-[1px] bg-[#BA4B32]/95 hover:bg-[#BA4B32] rounded-[0.40rem] text-white">
+                Login Now
+              </button>
+            </a>
           </div>
           <div className="disclaimer max-w-md text-center">
             <span>

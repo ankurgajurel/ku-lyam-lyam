@@ -21,12 +21,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          // href="https://unpkg.com/@arco-design/web-react/dist/css/arco.css"
-        />
-      </head>
       <body className={dm_sans.className}>
         <Navbar />
         {children}
