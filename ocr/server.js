@@ -1,6 +1,5 @@
 import express from 'express';
 import multer from 'multer';
-import crypto from 'crypto';
 import { OCR } from './ocr.js';
 import { encryptWithPublicKey } from './encrypt.js'
 import axios from 'axios';
@@ -25,7 +24,7 @@ app.post('/ocr', upload.single('citizenship'), async(req, res) => {
   
   const receiveData = await OCR(citizenship.buffer);
   
-  // const encryptedData = encryptWithPublicKey(publicKey, JSON.stringify(receiveData)).toString("hex");
+  const encryptedData = encryptWithPublicKey(publicKey, JSON.stringify(receiveData)).toString("hex");
   const apiUrl = SERVER_URL + "/onboard/verify";
   const headers = {
     'x-api-key': API_KEY,
@@ -35,10 +34,10 @@ app.post('/ocr', upload.single('citizenship'), async(req, res) => {
     userId: userId,
     decryptionKey: decryptionKey,
     iv: iv,
-    encryptedData: JSON.stringify(receiveData),
+    encryptedData: encryptedData
   };
   console.log('API Request:', sendData)    
-  // const response = await axios.patch(apiUrl, sendData, { headers });
+  const response = await axios.patch(apiUrl, sendData, { headers });
 
   if (!isAuthorized()) {
     res.status(401).send('Unauthorized');
@@ -47,11 +46,12 @@ app.post('/ocr', upload.single('citizenship'), async(req, res) => {
   res.status(200).send("Authorized");
 
 
-  try{
-    console.log("tessssttt");
-    let GetResponse = await fetch("https://server-p7.samrid.me/claims/types");
-    let data = await GetResponse.json();
-
+	try{
+		let GetResponse = await fetch(SERVER_URL + "/claims/types");
+		let data = await GetResponse.json();
+	}
+	catch (err){};
+  
     let claims = {
       "Above 21": false,
       "Nepali Citizen": true,
@@ -64,16 +64,16 @@ app.post('/ocr', upload.single('citizenship'), async(req, res) => {
     else{
       claims["Above 21"] = true;
     }
-    
-    const requests = data.claimTypes.map(item => {
-      let temp = {
-        userId: userId,
-        claimTypeId: item.id,
-        value: claims[item.name]
-      };
-      const claimsUrl = SERVER_URL + "/claims/add";
-      axios.post(claimsUrl, JSON.stringify(temp), { headers }).then(console.log).catch(console.log);
-    });
+    try{
+		const requests = data.claimTypes.map(item => {
+		let temp = {
+			userId: userId,
+			claimTypeId: item.id,
+			value: claims[item.name]
+		};
+		const claimsUrl = SERVER_URL + "/claims/add";
+		axios.post(claimsUrl, JSON.stringify(temp), { headers }).then(console.log).catch(console.log);
+		});
   }
   catch (err){
     console.log(err);
