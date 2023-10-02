@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { LogoEkOnly } from "../assetComponents/Logos";
+import { checkCustomRoutes } from "next/dist/lib/load-custom-routes";
 
 export default function Signup() {
   const [phone, setPhone] = useState("");
@@ -10,29 +11,30 @@ export default function Signup() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const loginData = {
+    const signupData = {
       phoneNumber: phone,
       password: password,
     };
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_BACKEND_URL}/auth/register`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(loginData),
+          body: JSON.stringify(signupData),
         }
       );
 
       if (response.ok) {
-        console.log("Login successful");
-        const { token } = await response.json();
-        localStorage.setItem("token", token);
+        console.log("Signup successful");
+        const { user } = await response.json();
+        console.log(response);
+        localStorage.setItem("userId", user.id);
       } else {
-        console.error("Login failed");
+        console.error("Signup failed");
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -92,8 +94,8 @@ export default function Signup() {
                 checked
               />
               <label className="text-sm text-gray-500 ml-3 dark:text-gray-400">
-                I agree to all of EkPahichan&apos;s Privacy Policies and Terms and
-                Conditions.
+                I agree to all of EkPahichan&apos;s Privacy Policies and Terms
+                and Conditions.
               </label>
             </div>
           </div>

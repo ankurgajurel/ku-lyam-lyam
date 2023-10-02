@@ -1,3 +1,7 @@
+"use client";
+``;
+import Typewriter from "typewriter-effect";
+
 export default function HomeHero() {
   return (
     <div className="relative overflow-hidden before:absolute before:top-0 before:left-1/2 before:bg-top before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2">
@@ -32,14 +36,23 @@ export default function HomeHero() {
 
         <div className="mt-5 max-w-3xl text-center mx-auto">
           <h1 className="block font-bold text-gray-800 text-4xl md:text-5xl lg:text-6xl">
-            Nepal&apos;s First secure and centralized KYC.
+            <>
+              <Typewriter
+                options={{
+                  strings: [`Nepal's First Secure and Centralized KYC`],
+                  autoStart: true,
+                  loop: true,
+                  cursor: " ",
+                }}
+              />
+            </>
           </h1>
         </div>
 
         <div className="mt-5 max-w-3xl text-center mx-auto">
           <p className="text-lg text-gray-600">
-            Unlocking Nepal&apos;s potential with a Unified KYC System | Seamlessly
-            verify identities, empower growth.
+            Unlocking Nepal&apos;s potential with a Unified KYC System |
+            Seamlessly verify identities, empower growth.
           </p>
         </div>
 

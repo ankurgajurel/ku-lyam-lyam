@@ -30,8 +30,10 @@ export default function Login() {
 
       if (response.ok) {
         console.log("Login successful");
-        const { token } = await response.json();
+        const { token, user } = await response.json();
         localStorage.setItem("token", token);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("phoneNumber", user.phoneNumber);
         router.push("/");
       } else {
         console.error("Login failed");
@@ -46,23 +48,14 @@ export default function Login() {
       <div className="border border-gray-200 rounded-[0.40rem] bg-white shadow-sm">
         <div className="px-10 py-10">
           <div className="">
-            <button
-              type="button"
-              className="w-full py-3 px-4 inline-flex justify-center items-center gap-2 rounded-[0.40rem] border font-medium text-gray-700 shadow-sm align-middle hover:bg-gray-50 transition-all text-sm"
-            >
-              <LogoEkOnly />
-              Login with Ek Pahichan
-            </button>
-
-            <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:mr-6 after:flex-[1_1_0%] after:border-t after:ml-6">
-              Or
+            <div className="text-xl font-extrabold mb-7">
+              Log Into Ek Pahichan
             </div>
-
             <form onSubmit={handleSubmit}>
               <div className="grid gap-y-4">
                 <div>
                   <label htmlFor="email" className="block text-sm mb-2">
-                    Email address
+                    Phone Number
                   </label>
                   <div className="relative">
                     <input

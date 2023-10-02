@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import crypto from "crypto";
+
 import { Steps, Button } from "@arco-design/web-react";
 import { IconLeft, IconRight } from "@arco-design/web-react/icon";
+import axios from "axios";
 
 const Step = Steps.Step;
 
@@ -43,7 +47,7 @@ function App() {
     dob: "",
     nationality: "",
     education: "",
-    govID: "",
+    govID: null,
     phone: "",
     fatherName: "",
     motherName: "",
@@ -59,10 +63,6 @@ function App() {
     occupationInfo: "",
     annualIncome: "",
   });
-
-  function handleSubmit() {
-    console.log(formData);
-  }
 
   function renderContent(step: any) {
     return (
@@ -92,7 +92,13 @@ function App() {
             Next
             <IconRight />
           </Button>
-          {current === 4 ? <button onClick={handleSubmit}>Submit</button> : <></>}
+          {current === 4 ? (
+            <button onClick={() => {}} className="">
+              Submit
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     );
@@ -120,10 +126,22 @@ function App() {
 
 export default App;
 
-function PersonalDetails({ formData, setFormData }: any) {
-  const { fullName, gender, dob, nationality, education, govID, phone } =
-    formData;
+function PersonalDetails() {
+  // Define initial form data
+  const initialFormData = {
+    fullName: "",
+    gender: "",
+    dob: "",
+    nationality: "",
+    education: "",
+    phone: "",
+    govIDFile: null, // Initialize govIDFile as null
+  };
 
+  // Create state variables for formData and govIDFile
+  const [formData, setFormData] = useState(initialFormData);
+
+  // Handle input field changes
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
@@ -132,106 +150,85 @@ function PersonalDetails({ formData, setFormData }: any) {
     });
   };
 
+  // Handle govIDFile selection
+  const handleGovIDFileChange = (e: any) => {
+    // Store the selected file
+    setFormData({
+      ...formData,
+      govIDFile: e.target.files[0], // Update the form data with the selected file
+    });
+  };
+  // console.log(publicKey, privateKey);
+  // Handle form submission
+  const handleSubmit = async (e: any) => {
+    e.preventDefault(); // Prevent the form from submitting via browser default behavior
+
+    try {
+      const formDataToSend = {
+        decryptionKey: "hello1234",
+        publicKey: "hello1234",
+        userId: localStorage.getItem('userId'),
+        citizenship: formData.govIDFile,
+        iv: "abcd",
+      };
+      // formDataToSend.appe  nd("fullName", formData.fullName);
+      // formDataToSend.append("gender", formData.gender);
+      // formDataToSend.append("dob", formData.dob);
+      // formDataToSend.append("nationality", formData.nationality);
+      // formDataToSend.append("education", formData.education);
+      // formDataToSend.append("phone", formData.phone);
+      //@ts-ignore
+      // formDataToSend.append("govIDFile", formData.govIDFile); // Append the selected file
+      // formDataToSend.append("publicKey", publicKey);
+
+      const apiUrl = process.env.NEXT_PUBLIC_OCR_URL;
+
+      if (!apiUrl) {
+        console.log("api url problems");
+        return;
+      }
+
+      const response = await axios.post(apiUrl, formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Handle the response from the API as needed
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   return (
     <div className="grid md:grid-cols-2 gap-5 text-black text-base py-10">
-      <div className="flex flex-col ">
+      <div className="flex flex-col">
         <span className="text-xs mb-1">Full Name</span>
         <input
           type="text"
           className="border-[1px] h-full px-2 py-2 rounded-[0.40rem]"
           name="fullName"
-          id="full-name"
           placeholder="Full Name"
-          value={fullName}
+          value={formData.fullName}
           onChange={handleChange}
         />
       </div>
-      <div className="flex flex-col">
-        <span className="text-xs mb-1">Gender</span>
-        <select
-          id="gender"
-          name="gender"
-          className="border-[1px] h-full rounded-[0.40rem] px-2 py-2"
-          value={gender}
-          onChange={handleChange}
-        >
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div className="flex flex-col">
-        <span className="text-xs mb-1">Date Of Birth</span>
+      {/* Add other input fields here */}
+      {/* ... */}
+      <div className="flex flex-col w-1/2">
+        <span className="text-xs mb-1">Gov ID (Licence / Citizenship)</span>
         <input
-          type="date"
-          className="border-[1px] py-2 px-2 rounded-[0.40rem]"
-          name="dob"
-          id="dob"
-          value={dob}
-          onChange={handleChange}
+          type="file"
+          name="govIDFile"
+          accept=".jpg, .jpeg, .png, .gif"
+          className="block w-full border border-gray-200 shadow-sm rounded-[0.40rem] text-sm file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4"
+          onChange={handleGovIDFileChange}
         />
-      </div>
-      <div className="flex flex-col">
-        <span className="text-xs mb-1">Nationality</span>
-        <input
-          type="text"
-          className="border-[1px] py-2 px-2 rounded-[0.40rem]"
-          name="nationality"
-          id="nationality"
-          placeholder="Nepali"
-          value={nationality}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="flex items-center col-span-2 w-full justify-between gap-5">
-        <div className="flex flex-col w-1/2">
-          <span className="text-xs mb-1">Education</span>
-          <select
-            id="education"
-            name="education"
-            className="border-[1px] h-fit rounded-[0.40rem] px-2 py-2"
-            value={education}
-            onChange={handleChange}
-          >
-            <option value="ble">BLE / DLE</option>
-            <option value="see">SLC / SEE</option>
-            <option value="plus-two">Plus Two</option>
-            <option value="bachelors">Bachelor&apos;s</option>
-            <option value="masters">Master&apos;s</option>
-            <option value="phd">Ph.D</option>
-          </select>
-        </div>
-        <div className="flex flex-col w-1/2">
-          <span className="text-xs mb-1">Gov ID (Licence / Citizenship)</span>
-          <input
-            type="file"
-            name="govID"
-            accept=".jpg, .jpeg, .png, .gif"
-            id="file-input"
-            className="block w-full border border-gray-200 shadow-sm rounded-[0.40rem] text-sm file:bg-transparent file:border-0 file:bg-gray-100 file:mr-4 file:py-3 file:px-4"
-            value={govID}
-            onChange={handleChange}
-          />
-          <span className="text-xs italic mt-1">
-            Only files with (.jpg, .jpeg, .png, .gif) extensions are accepted
-          </span>
-        </div>
-      </div>
-      <div className="flex flex-col col-span-2 px-[20%]">
-        <span className="text-xs mb-1">Phone</span>
-        <div className="border-[1px] px-4 py-2 flex gap-5 rounded-lg">
-          <span>+977</span>
-          <input
-            type="tel"
-            className="h-full w-full"
-            name="phone"
-            inputMode="numeric"
-            id="phone"
-            placeholder="Phone Number"
-            value={phone}
-            onChange={handleChange}
-          />
-        </div>
+        <span className="text-xs italic mt-1">
+          Only files with (.jpg, .jpeg, .png, .gif) extensions are accepted
+        </span>
+        <button onClick={handleSubmit}>Send!</button>
       </div>
     </div>
   );

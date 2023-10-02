@@ -8,7 +8,11 @@ export const NavItems = [
         href: ""
     },
     {
-        name: "Verify KYC Demo",
-        href: "/verify-kyc"
+        name: "Fill KYC Demo",
+        href: "/fill-kyc"
     },
+    {
+        name: 'Sample Merchant',
+        href: "/merchant"
+    }
 ]

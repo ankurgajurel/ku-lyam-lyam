@@ -27,7 +27,7 @@ export default function ProfileItem() {
         </div>
         <div className="text flex-col hidden md:flex">
           <div className="email line-clamp-1 flex flex-wrap text-sm">
-            Ankur Gajurel
+            Dhiraj Chapagain
           </div>
           <div className="text text-xs text-center">View Profile</div>
         </div>
